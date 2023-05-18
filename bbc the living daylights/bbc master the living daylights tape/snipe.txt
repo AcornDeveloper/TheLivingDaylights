@@ -1,0 +1,131 @@
+   10 REM SNIPE
+   20 *K.0MO.7|MVDU14|ML.750,|M
+   30 *K.1RUN|M
+   40 *K.2REN.|M
+   50 *K.3P.~P%|M
+   60 *K.10PA.=&5800|MO.|M*FX12,2|M
+   70 *TV255
+   80 snipd=&18
+   90 snipm=&1C
+  100 snipx=&20
+  110 snipi=&24
+  120 snipy=&28
+  130 snipc=&2C
+  140 snipf=&3E
+  150 roads=&46
+  160 randy=&50
+  170 tempa=&70
+  180 tempx=&71
+  190 tempy=&72
+  200 tempz=&73
+  210 level=&7D
+  220 foods=&81
+  230 xregs=&98
+  240 INDIR=&1203
+  250 PUTIN=&1A79
+  260 FRRAM=&1A7C
+  270 NOISE=&1C46
+  280 RANDY=&1EC0
+  290 MASKS=&2489
+  300 BHIND=&248C
+  310 WINDO=&248F
+  320 REHID=&2492
+  330 CROSS=&2A92
+  340 EATEN=&2A95
+  350 PIPED=&2A98
+  360 OSW=&FFEE
+  370 OSO=&FFF1
+  380 OSB=&FFF4
+  390 OSC=&FFF7
+  400 FORA%=0TO2STEP2
+  410 P%=&2CA0
+  420 [OPTA%
+  430 .SNIPA JMPA
+  440 .SNIPB JMPB
+  450 .SNIPC JMPC
+  460 .FILES JMPD
+  470 .A
+  480 LDA#&FF:LDX#3
+  490 .highs
+  500 STAsnipx,X:DEX:BPLhighs
+  510 .blade RTS
+  520 .snipe
+  530 EQUD&21212120:EQUD&FF2121FF
+  540 .B
+  550 LDXlevel:LDAsnipe,X:BMIblade
+  560 JSRPIPED
+  570 JSRCROSS
+  580 LDX#3:STXxregs
+  590 .stone
+  600 JSRRANDY
+  610 JSRAPEAR
+  620 JSRPUTON
+  630 DECxregs:BPLstone
+  640 JSRCROSS
+  650 JMPPIPED
+  660 .ycoor
+  670 EQUD&5050507:EQUD&5050505
+  680 .modes
+  690 EQUD&00000100:EQUD&FF0000FF
+  700 .jumps
+  710 EQUD&1010100:EQUD&1010101
+  720 .APEAR
+  730 LDAroads:CMP#8:BCCnoint
+  740 LDXxregs:LDAsnipx,X:BPLnoint
+  750 LDArandy,X:CMP#16:BCSnoint
+  760 ASLA:STAtempy
+  770 LDX#3
+  780 .apear
+  790 LDAsnipx,X:BMInowts
+  800 SEC:SBCtempy:BCSplust
+  810 EOR#&FF
+  820 .plust
+  830 CMP#6:BCCnoint
+  840 .nowts
+  850 DEX:BPLapear
+  860 LDYlevel:LDXxregs:STXtempa
+  870 LDA#&FF:STAsnipc,X
+  880 LDAtempy:STAsnipx,X:STAtempx
+  890 LDAsnipe,Y:STAsnipi,X
+  900 LDAycoor,Y:STAsnipy,X
+  910 LDAjumps,Y:STAsnipm,X
+  920 LDAmodes,Y:STAsnipf
+  930 LDA#0:STAsnipd,X:JMPWINDO
+  940 .C
+  950 LDX#3
+  960 .shift
+  970 LDAsnipx,X:BMIforge:DECsnipx,X
+  980 .forge
+  990 DEX:BPLshift
+ 1000 .noint RTS
+ 1010 .PUTON
+ 1020 LDXxregs
+ 1030 LDAsnipx,X:BMInoint
+ 1040 STAtempx
+ 1050 LDYsnipy,X:STYtempy
+ 1060 LDAsnipi,X:STAtempa
+ 1070 LDAsnipf:BNEforwd
+ 1080 JMPBHIND
+ 1090 .forwd
+ 1100 JMPMASKS
+ 1110 .files
+ 1120 EQUD&2010101:EQUD&3030202
+ 1130 .graph EQUB1
+ 1140 .loads
+ 1150 EQUS"LOAD FILE* 3A20":EQUB&D
+ 1160 .detal
+ 1170 EQUB22:EQUB7
+ 1180 EQUW&41F:EQUB4
+ 1190 EQUS"SEARCHING FOR FILE"
+ 1200 .names
+ 1210 EQUS"*":EQUB10
+ 1220 .D
+ 1230 LDXlevel:LDAfiles,X
+ 1240 CMPgraph:BEQnoint:STAgraph
+ 1250 CLC:ADC#48:STAnames:STAloads+9
+ 1260 LDX#detal AND255:LDY#detal/256
+ 1270 LDA#D-detal:JSRINDIR
+ 1280 LDX#loads AND255:LDY#loads/256
+ 1290 JMPOSC
+ 1300 ]:NEXT
+

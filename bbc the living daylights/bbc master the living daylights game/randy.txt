@@ -1,0 +1,142 @@
+   10 REM RANDY
+   20 *K.0MO.7|MVDU14|ML.970,|M
+   30 *K.1RUN|M
+   40 *K.2REN.|M
+   50 *K.3P.~P%|M
+   60 *K.10PA.=&5800|MO.|M*FX12,2|M
+   70 *TV255
+   80 randy=&50
+   90 framc=&67
+  100 tside=&6F
+  110 tempa=&70
+  120 tempx=&71
+  130 tempy=&72
+  140 tempz=&73
+  150 level=&7D
+  160 point=&8C
+  170 korov=&8D
+  180 frame=&8E
+  190 DELAY=&121B
+  200 SPRIT=&1A70
+  210 SCRNA=&1C40
+  220 CBOND=&2A80
+  230 video=&6D38
+  240 OSW=&FFEE
+  250 OSO=&FFF1
+  260 OSB=&FFF4
+  270 FORA%=0TO2STEP2
+  280 P%=&1EC0
+  290 [OPTA%
+  300 .RANDY JMPA
+  310 .BONDS JMPB
+  320 .KOROV JMPC
+  330 .TSIDE JMPD
+  340 .EARTH JMPE
+  350 .GRASS JMPF
+  360 .extnt
+  370 EQUD0
+  380 ]
+  390 PROCspace
+  400 [OPTA%
+  410 EQUS"Written by Matthew Atkinson "
+  420 EQUS"for EXASOFT SOFTWARE,DOMARK "
+  430 EQUS"and YOU!!."
+  440 EQUS"(c) DOMARK LIMITED 1987"
+  450 .A
+  460 CLC:LDY#&29:LDX#&FC
+  470 .rndlp
+  480 TYA:LDYrandy+4,X
+  490 ADCrandy+4,X:STArandy+4,X
+  500 INX:BNErndlp
+  510 LDArandy:LDYrandy+1:RTS
+  520 .B
+  530 LDA#6
+  540 STAframe:STAtempa
+  550 LDX#8:STXtempx:STXtside
+  560 LDY#11:STYtempy
+  570 JMPSPRIT
+  580 .aside
+  590 EQUD&101010FF:EQUD-1
+  600 .C
+  610 LDXlevel
+  620 LDAaside,X:STAkorov
+  630 BMIretun:STAtempa
+  640 LDX#4:STXtempx
+  650 LDY#10:STYtempy
+  660 JMPSPRIT
+  670 .retun RTS
+  680 .bfram EQUD&7060504
+  690 .kfram EQUD&13121110
+  700 .D
+  710 LDAlevel:BEQretun
+  720 CMP#7:BEQretun
+  730 LDX#28:STXframc
+  740 LDA#8:STAtside
+  750 .trots
+  760 LDX#5:JSRDELAY
+  770 JSRCBOND:CMP#1:BNEtrots
+  780 JSRTROTS
+  790 INCtside
+  800 LDAframc:AND#3:TAX
+  810 LDAbfram,X:STAframe
+  820 LDAkorov:BMInoway
+  830 LDAkfram,X:STAkorov
+  840 .noway
+  850 JSRTROTS
+  860 DECframc:BNEtrots:RTS
+  870 .TROTS
+  880 LDAkorov:BMIbonly:STAtempa
+  890 LDAtside:SEC:SBC#4:STAtempx
+  900 LDY#10:STYtempy
+  910 JSRSPRIT
+  920 .bonly
+  930 LDAframe:STAtempa
+  940 LDXtside:STXtempx
+  950 LDY#11:STYtempy
+  960 JMPSPRIT
+  970 .E
+  980 JSRSCRNA
+  990 LDA#erth1 AND255:STAtempa
+ 1000 LDA#erth1/256:STAtempx
+ 1010 LDAlevel:AND#3
+ 1020 CLC:ADCtempx:STAtempx
+ 1030 LDApoint:AND#7:STApoint
+ 1040 AND#4:BEQnoadd
+ 1050 LDAtempa:CLC:ADC#128:STAtempa
+ 1060 BCCnoadd:INCtempx
+ 1070 .noadd
+ 1080 LDApoint:AND#3:ASLA:ASLA:ASLA
+ 1090 ADCtempa:STAtempa
+ 1100 BCCagain:INCtempx
+ 1110 .again
+ 1120 LDA#video AND255:STAtempy
+ 1130 LDA#video/256:STAtempz
+ 1140 LDX#4
+ 1150 .secon
+ 1160 LDY#7
+ 1170 .cells
+ 1180 LDA(tempa),Y:STA(tempy),Y
+ 1190 DEY:BPLcells
+ 1200 LDAtempa:CLC:ADC#32:STAtempa
+ 1210 BCCclean:INCtempx
+ 1220 .clean
+ 1230 LDAtempy:CLC:ADC#&40:STAtempy
+ 1240 LDAtempz:ADC#1:STAtempz
+ 1250 DEX:BNEsecon
+ 1260 INCpoint:RTS
+ 1270 .F
+ 1280 LDX#40
+ 1290 .grass
+ 1300 TXA:PHA:JSREARTH
+ 1310 PLA:TAX:DEX:BNEgrass:RTS
+ 1320 ]:NEXT
+ 1330 END
+ 1340 DEFPROCspace
+ 1350 P%=(P%+&10) AND&FFF0
+ 1360 erth1=P%
+ 1370 erth2=&3200
+ 1380 P%=P%+&400
+ 1390 [OPTA%
+ 1400 ]
+ 1410 ENDPROC
+
